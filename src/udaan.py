@@ -5,25 +5,12 @@ import datetime
 import time
 import numpy
 import threading
+
 import trajectory as trajectoryUtil
+from util import airports as airportsUtil
+
 
 sio = socketio.Client()
-
-SFO = {
-    "latDeg": 37.6213129,
-    "lonDeg": -122.3789554
-}
-
-LAX = {
-    "latDeg": 33.9415933,
-    "lonDeg": -118.4107187
-}
-
-SJC = {
-    "latDeg": 37.3639472,
-    "lonDeg": -121.9289375
-}
-
 
 @sio.event
 def connect():
@@ -34,44 +21,49 @@ def main():
 
     logger.info("Namaskar Mandali!")
 
-    sio.connect('http://localhost:8786')
+    if True:
 
-    trajectories = []
+        sio.connect('http://localhost:8786')
 
-    flights = [
-        {
-            'callsign': "ARKITS1",
-            'startPort': SFO,
-            'endPort': SJC
-        },
-        {
-            'callsign': "ARKITS2",
-            'startPort': SJC,
-            'endPort': SFO
-        }
-    ]
+        trajectories = []
 
-    for flight in flights:
-        trajectory = trajectoryUtil.calculateTrajectory(
-            flight['startPort'], flight['endPort'])
-        trajectories.append(trajectory)
+        SFO = airportsUtil.getAirport("SFO")
+        SJC = airportsUtil.getAirport("SJC")
 
-    flightThreads = []
+        flights = [
+            {
+                'callsign': "ARKITS1",
+                'startPort': SFO,
+                'endPort': SJC
+            },
+            {
+                'callsign': "ARKITS2",
+                'startPort': SJC,
+                'endPort': SFO
+            }
+        ]
 
-    for x in range(len(flights)):
+        for flight in flights:
+            trajectory = trajectoryUtil.calculateTrajectory(
+                flight['startPort'], flight['endPort'])
+            trajectories.append(trajectory)
 
-        flight = flights[x]
-        trajectory = trajectories[x]
+        flightThreads = []
 
-        flightThread = threading.Thread(
-            target=flyFlight, args=(flight, trajectory,))
+        for x in range(len(flights)):
 
-        flightThread.start()
+            flight = flights[x]
+            trajectory = trajectories[x]
 
-        flightThreads.append(flightThread)
+            flightThread = threading.Thread(
+                target=flyFlight, args=(flight, trajectory,))
 
-    for flightThread in flightThreads:
-        flightThread.join()
+            flightThread.start()
+
+            flightThreads.append(flightThread)
+
+        for flightThread in flightThreads:
+            flightThread.join()
 
 
 def flyFlight(flight, trajectory):
