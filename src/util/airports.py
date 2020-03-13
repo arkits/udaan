@@ -37,6 +37,7 @@ def getRandomAirport():
 
     return convertToUdaanAirport(random.choice(airportsFile))
 
+
 def getRandomUsAirport():
 
     keepLooping = True

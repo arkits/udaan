@@ -1,6 +1,7 @@
 from loguru import logger
 import numpy
 
+
 def calculateTrajectory(startPort, endPort):
 
     trajectory = []
