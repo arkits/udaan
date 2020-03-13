@@ -5,6 +5,7 @@ import datetime
 import time
 import numpy
 import threading
+import random
 
 import trajectory as trajectoryUtil
 from util import airports as airportsUtil
@@ -28,13 +29,12 @@ def main():
 
         trajectories = []
 
-        # flights = getBayAreaFlights()
+        flights = getBayAreaFlights()
 
-        flights = getRandomFlights(10)
+        # flights = getRandomFlights(10)
 
         for flight in flights:
-            trajectory = trajectoryUtil.calculateTrajectory(
-                flight['startPort'], flight['endPort'])
+            trajectory = trajectoryUtil.calculateTrajectory(flight)
             trajectories.append(trajectory)
 
         flightThreads = []
@@ -64,12 +64,14 @@ def getBayAreaFlights():
         {
             'callsign': "ARKITS1",
             'startPort': SFO,
-            'endPort': SJC
+            'endPort': SJC,
+            'cruiseSpeed': 222
         },
         {
             'callsign': "ARKITS2",
             'startPort': SJC,
-            'endPort': SFO
+            'endPort': SFO,
+            'cruiseSpeed': 564
         }
     ]
 
@@ -77,6 +79,8 @@ def getBayAreaFlights():
 
 
 def getRandomFlights(numberOfFlights):
+
+    speeds = [222, 564]
 
     flights = []
 
@@ -88,7 +92,8 @@ def getRandomFlights(numberOfFlights):
         flight = {
             "callsign": "ARKITS" + str(x),
             "startPort": airportA,
-            "endPort": airportB
+            "endPort": airportB,
+            'cruiseSpeed': random.choice(speeds)
         }
 
         flights.append(flight)
