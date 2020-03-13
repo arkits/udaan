@@ -28,9 +28,9 @@ def main():
 
         trajectories = []
 
-        flights = getBayAreaFlights()
+        # flights = getBayAreaFlights()
 
-        # flights = getRandomFlights(10)
+        flights = getRandomFlights(10)
 
         for flight in flights:
             trajectory = trajectoryUtil.calculateTrajectory(
@@ -82,8 +82,8 @@ def getRandomFlights(numberOfFlights):
 
     for x in range(numberOfFlights):
 
-        airportA = airportsUtil.getRandomAirport()
-        airportB = airportsUtil.getRandomAirport()
+        airportA = airportsUtil.getRandomUsAirport()
+        airportB = airportsUtil.getRandomUsAirport()
 
         flight = {
             "callsign": "ARKITS" + str(x),

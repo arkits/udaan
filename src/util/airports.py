@@ -37,6 +37,20 @@ def getRandomAirport():
 
     return convertToUdaanAirport(random.choice(airportsFile))
 
+def getRandomUsAirport():
+
+    keepLooping = True
+
+    while keepLooping:
+
+        airport = random.choice(airportsFile)
+
+        if airport["iso_country"] == "US":
+
+            keepLooping = False
+
+    return convertToUdaanAirport(airport)
+
 
 def convertToUdaanAirport(airport):
 
