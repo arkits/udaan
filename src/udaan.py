@@ -12,6 +12,7 @@ from util import airports as airportsUtil
 
 sio = socketio.Client()
 
+
 @sio.event
 def connect():
     logger.info("Connected to Server")
@@ -27,21 +28,9 @@ def main():
 
         trajectories = []
 
-        SFO = airportsUtil.getAirport("SFO")
-        SJC = airportsUtil.getAirport("SJC")
+        flights = getBayAreaFlights()
 
-        flights = [
-            {
-                'callsign': "ARKITS1",
-                'startPort': SFO,
-                'endPort': SJC
-            },
-            {
-                'callsign': "ARKITS2",
-                'startPort': SJC,
-                'endPort': SFO
-            }
-        ]
+        # flights = getRandomFlights(10)
 
         for flight in flights:
             trajectory = trajectoryUtil.calculateTrajectory(
@@ -64,6 +53,47 @@ def main():
 
         for flightThread in flightThreads:
             flightThread.join()
+
+
+def getBayAreaFlights():
+
+    SFO = airportsUtil.getAirport("SFO")
+    SJC = airportsUtil.getAirport("SJC")
+
+    flights = [
+        {
+            'callsign': "ARKITS1",
+            'startPort': SFO,
+            'endPort': SJC
+        },
+        {
+            'callsign': "ARKITS2",
+            'startPort': SJC,
+            'endPort': SFO
+        }
+    ]
+
+    return flights
+
+
+def getRandomFlights(numberOfFlights):
+
+    flights = []
+
+    for x in range(numberOfFlights):
+
+        airportA = airportsUtil.getRandomAirport()
+        airportB = airportsUtil.getRandomAirport()
+
+        flight = {
+            "callsign": "ARKITS" + str(x),
+            "startPort": airportA,
+            "endPort": airportB
+        }
+
+        flights.append(flight)
+
+    return flights
 
 
 def flyFlight(flight, trajectory):

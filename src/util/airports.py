@@ -33,7 +33,7 @@ def getAirport(airportCode):
     return convertToUdaanAirport(airportToReturn)
 
 
-def getRandomAirports():
+def getRandomAirport():
 
     return convertToUdaanAirport(random.choice(airportsFile))
 
