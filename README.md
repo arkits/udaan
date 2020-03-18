@@ -1,8 +1,8 @@
-# Udaan
+# 🛫 Udaan
 
 ## About
 
-Udaan is an experimental traffic generation written in Python 3. Udaan is meant to be an data source to [Exige](https://github.com/arkits/exige-react).
+Udaan is an experimental traffic generator written in Python 3. Udaan is meant to be an data source to [Exige](https://github.com/arkits/exige-react).
 
 ## Reference
 
