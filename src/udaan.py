@@ -116,7 +116,9 @@ def flyVehicle(flight, trajectoryPoint):
         'data': {
             'vid': flight['callsign'],
             'latDeg': trajectoryPoint['latDeg'],
-            'lonDeg': trajectoryPoint['lonDeg']
+            'lonDeg': trajectoryPoint['lonDeg'],
+            'altFt': 2000,
+            'trueHeading' : trajectoryPoint['trueHeading']
         },
         'metadata': {
             'sourceTimestamp': str(datetime.datetime.utcnow().isoformat())

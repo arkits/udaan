@@ -1,6 +1,6 @@
 from loguru import logger
 import numpy
-from math import sin, cos, sqrt, atan2, radians
+from math import sin, cos, sqrt, atan2, radians, degrees
 
 # approximate radius of earth in km
 R = 6373.0
@@ -28,9 +28,23 @@ def calculateTrajectory(flight):
 
     for x in range(len(latTrajectory)):
 
+        latDeg = latTrajectory[x]
+        lonDeg = lonTrajectory[x]
+
+        pointA = [latDeg, lonDeg]
+
+        if x < len(latTrajectory) - 1:
+            pointB = [latTrajectory[x+1], lonTrajectory[x+1]]
+        else: 
+            pointB = [latDeg, lonDeg]
+
+        trueHeading = calculateHeading(pointA, pointB) 
+
+
         trajectory.append({
-            'latDeg': latTrajectory[x],
-            'lonDeg': lonTrajectory[x]
+            'latDeg': latDeg,
+            'lonDeg': lonDeg,
+            'trueHeading': trueHeading
         })
 
     return trajectory
@@ -55,7 +69,6 @@ def calculateTrajectoryPoints(startPort, endPort, coType, timeTaken):
 
         reversePts = True
 
-    # TODO: Calculate step based on distance
     for rPoint in numpy.linspace(pointA, pointB, timeTaken):
 
         trajectoryPts.append(rPoint)
@@ -84,3 +97,22 @@ def calculateDistance(startPort, endPort):
     distance = R * c     # In km
 
     return distance
+
+
+def calculateHeading(pointA, pointB):
+
+    lat1 = radians(pointA[0])
+    lat2 = radians(pointB[0])
+
+    diffLong = radians(pointB[1] - pointA[1])
+
+    x = sin(diffLong) * cos(lat2)
+    y = cos(lat1) * sin(lat2) - (sin(lat1)
+            * cos(lat2) * cos(diffLong))
+
+    initial_bearing = atan2(x, y)
+
+    initial_bearing = degrees(initial_bearing)
+    compass_bearing = (initial_bearing + 360) % 360
+
+    return compass_bearing
