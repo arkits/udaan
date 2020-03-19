@@ -26,25 +26,19 @@ def calculateTrajectory(flight):
     lonTrajectory = calculateTrajectoryPoints(
         startPort, endPort, "lonDeg", timeTaken)
 
+    pointA = [startPort['latDeg'], startPort['lonDeg']]
+    pointB = [endPort['latDeg'], endPort['lonDeg']]
+    heading = (calculateHeading(pointA, pointB))
+
     for x in range(len(latTrajectory)):
 
         latDeg = latTrajectory[x]
         lonDeg = lonTrajectory[x]
 
-        pointA = [latDeg, lonDeg]
-
-        if x < len(latTrajectory) - 1:
-            pointB = [latTrajectory[x+1], lonTrajectory[x+1]]
-        else: 
-            pointB = [latDeg, lonDeg]
-
-        trueHeading = calculateHeading(pointA, pointB) 
-
-
         trajectory.append({
             'latDeg': latDeg,
             'lonDeg': lonDeg,
-            'trueHeading': trueHeading
+            'trueHeading': heading
         })
 
     return trajectory
@@ -108,7 +102,7 @@ def calculateHeading(pointA, pointB):
 
     x = sin(diffLong) * cos(lat2)
     y = cos(lat1) * sin(lat2) - (sin(lat1)
-            * cos(lat2) * cos(diffLong))
+                                 * cos(lat2) * cos(diffLong))
 
     initial_bearing = atan2(x, y)
 
